@@ -1,46 +1,55 @@
-#include "gamefield.h"
 #include <QGraphicsScene>
-#include "edgeview.h"
+#include "gamefield.h"
+#include "sideview.h"
 
 GameField::GameField(QObject* parent) :
     QGraphicsScene(parent)
 {
-    drawHorizontalEdges();
-    drawVerticalEdges();
+    drawHorizontalSides();
+    drawVerticalSides();
     drawPoints();
+    drawCells();
 }
 
 
-void GameField::drawHorizontalEdges()
+void GameField::drawHorizontalSides()
 {
-    size_t shift_x = paddings_ + circle_diameter_ / 2, shift_y = paddings_;
+    size_t shift_x = paddings_ + circle_diameter_ / 2;
+    size_t shift_y = paddings_;
     size_t dx = (width_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
     size_t dy = (height_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
-    for (size_t i = 0; i < points_amount_; ++i) {
+    for (size_t i = 0; i < points_amount_; ++i)
+    {
+        horizontal_sides.push_back(QList<SideView*>());
         shift_x = paddings_ + circle_diameter_ / 2;
-        for (size_t j = 0; j < points_amount_ - 1; ++j) {
-            EdgeView* edge = new EdgeView(dx, circle_diameter_);
-            edge->moveBy(shift_x, shift_y);
-            this->addItem(edge);
-            edges_.push_back(edge);
+        for (size_t j = 0; j < points_amount_ - 1; ++j)
+        {
+            SideView* side = new SideView(dx, circle_diameter_);
+            side->moveBy(shift_x, shift_y);
+            addItem(side);
+            horizontal_sides[i].push_back(side);
             shift_x += dx;
         }
         shift_y += dy;
     }
 }
 
-void GameField::drawVerticalEdges()
+void GameField::drawVerticalSides()
 {
-    size_t shift_x = paddings_, shift_y = paddings_ + circle_diameter_ / 2;
+    size_t shift_x = paddings_;
+    size_t shift_y = paddings_ + circle_diameter_ / 2;
     size_t dx = (width_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
     size_t dy = (height_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
-    for (size_t i = 0; i < points_amount_ - 1; ++i) {
+    for (size_t i = 0; i < points_amount_ - 1; ++i)
+    {
+        vertical_sides.push_back(QList<SideView*>());
         shift_x = paddings_;
-        for (size_t j = 0; j < points_amount_; ++j) {
-            EdgeView* edge = new EdgeView(circle_diameter_, dy);
-            edge->moveBy(shift_x, shift_y);
-            this->addItem(edge);
-            edges_.push_back(edge);
+        for (size_t j = 0; j < points_amount_; ++j)
+        {
+            SideView* side = new SideView(circle_diameter_, dy);
+            side->moveBy(shift_x, shift_y);
+            addItem(side);
+            vertical_sides[i].push_back(side);
             shift_x += dx;
         }
         shift_y += dy;
@@ -64,10 +73,34 @@ void GameField::drawPoints()
     size_t shift_x = paddings_, shift_y = paddings_;
     size_t dx = (width_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
     size_t dy = (height_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
-    for (size_t i = 0; i < points_amount_; ++i) {
+    for (size_t i = 0; i < points_amount_; ++i)
+    {
         shift_x = paddings_;
-        for (size_t j = 0; j < points_amount_; ++j) {
-            this->addEllipse(shift_x, shift_y, circle_diameter_, circle_diameter_, pen, brush);
+        for (size_t j = 0; j < points_amount_; ++j)
+        {
+            addEllipse(shift_x, shift_y, circle_diameter_, circle_diameter_, pen, brush);
+            shift_x += dx;
+        }
+        shift_y += dy;
+    }
+}
+
+void GameField::drawCells()
+{
+    size_t shift_x = paddings_ + circle_diameter_ / 2 + cell_paddings_;
+    size_t shift_y = paddings_ + circle_diameter_ / 2 + cell_paddings_;
+    size_t dx = (width_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
+    size_t dy = (height_ - 2 * paddings_ - circle_diameter_) / (points_amount_ - 1);
+    for (size_t i = 0; i < points_amount_ - 1; ++i)
+    {
+        shift_x = paddings_ + circle_diameter_ / 2 + cell_paddings_;
+        cells.push_back(QList<CellView*>());
+        for (size_t j = 0; j < points_amount_ - 1; ++j)
+        {
+            CellView* cell = new CellView(dx - 2 * cell_paddings_, dy - 2 * cell_paddings_);
+            cell->moveBy(shift_x, shift_y);
+            addItem(cell);
+            cells[i].push_back(cell);
             shift_x += dx;
         }
         shift_y += dy;

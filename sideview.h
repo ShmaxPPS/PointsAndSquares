@@ -1,16 +1,16 @@
-#ifndef EDGEVIEW_H
-#define EDGEVIEW_H
+#ifndef SIDEVIEW_H
+#define SIDEVIEW_H
 
 #include <QGraphicsItem>
 #include <QPainter>
 
 
-enum State { PRESSED, HOVERED, ENABLED, DISABLED };
+enum SideState { PRESSED, HOVERED, ENABLED, DISABLED };
 
-class EdgeView : public QGraphicsItem
+class SideView : public QGraphicsItem
 {
 public:
-    EdgeView(size_t width, size_t height);
+    SideView(size_t width, size_t height);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -22,13 +22,13 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 public:
-    State state;
+    SideState state;
 
 private:
     size_t width_;
     size_t height_;
+    QBrush brush_;
 };
 
 
-
-#endif // EDGEVIEW_H
+#endif // SIDEVIEW_H

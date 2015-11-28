@@ -17,10 +17,19 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     gamefield.cpp \
-    edgeview.cpp
+    sideview.cpp \
+    cellview.cpp \
+    gamemanager.cpp
 
 HEADERS  += mainwindow.h \
     gamefield.h \
-    edgeview.h
+    sideview.h \
+    cellview.h \
+    gamemanager.h
 
 FORMS    += mainwindow.ui
+
+OTHER_FILES +=
+
+RESOURCES += \
+    images.qrc
