@@ -7,13 +7,10 @@
 #include "sideview.h"
 #include "cellview.h"
 
-class GameField : public QGraphicsScene
+class GameField
 {
-    Q_OBJECT
-
-
 public:
-    explicit GameField(GameManager *game_manager, QObject* parent = 0);
+    explicit GameField(size_t width, size_t height, GameManager *game_manager);
 
 private:
     void drawPoints();
@@ -36,8 +33,10 @@ private:
     size_t paddings_ = 10;
     size_t cell_paddings_ = 10;
     size_t circle_diameter_ = 10;
-    size_t width_ = 500;
-    size_t height_ = 500;
+    size_t width_;
+    size_t height_;
+    size_t shift_x_;
+    size_t shift_y_;
 };
 
 #endif // GAMEFIELD_H

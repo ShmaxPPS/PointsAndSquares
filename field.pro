@@ -15,21 +15,24 @@ CONFIG += c++11
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     gamefield.cpp \
     sideview.cpp \
     cellview.cpp \
     gamemanager.cpp \
-    computerai.cpp
+    computerai.cpp \
+    game.cpp \
+    button.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     gamefield.h \
     sideview.h \
     cellview.h \
     gamemanager.h \
-    computerai.h
+    computerai.h \
+    game.h \
+    button.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 OTHER_FILES +=
 
