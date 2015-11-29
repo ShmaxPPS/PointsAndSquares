@@ -1,7 +1,11 @@
 #include "cellview.h"
 
-CellView::CellView(size_t width, size_t height) :
-    width_(width), height_(height), state_(EMPTY) { }
+CellView::CellView(size_t width, size_t height)
+{
+    width_ = width;
+    height_ = height;
+    state_ = EMPTY;
+}
 
 QRectF CellView::boundingRect() const
 {
@@ -16,10 +20,10 @@ void CellView::paint(QPainter *painter,
     {
         case EMPTY:
             break;
-        case FIRST_PLAYER:
+        case PLAYER:
             picture.load(":/faces/blue.png");
             break;
-        case SECOND_PLAYER:
+        case COMPUTER:
             picture.load(":/faces/red.png");
             break;
         default:
@@ -33,7 +37,7 @@ void CellView::setState(CellState state)
     if (state_ != state)
     {
         state_ = state;
-        update();
+        emit callCellRedraw();
     }
 }
 

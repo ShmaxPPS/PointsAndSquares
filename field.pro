@@ -19,13 +19,15 @@ SOURCES += main.cpp\
     gamefield.cpp \
     sideview.cpp \
     cellview.cpp \
-    gamemanager.cpp
+    gamemanager.cpp \
+    computerai.cpp
 
 HEADERS  += mainwindow.h \
     gamefield.h \
     sideview.h \
     cellview.h \
-    gamemanager.h
+    gamemanager.h \
+    computerai.h
 
 FORMS    += mainwindow.ui
 

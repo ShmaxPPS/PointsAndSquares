@@ -13,7 +13,7 @@ class GameField : public QGraphicsScene
 
 
 public:
-    explicit GameField(QObject* parent = 0);
+    explicit GameField(GameManager *game_manager, QObject* parent = 0);
 
 private:
     void drawPoints();
@@ -22,13 +22,16 @@ private:
     void drawCells();
 
 
-
 public:
     QList<QList<SideView*> > horizontal_sides;
     QList<QList<SideView*> > vertical_sides;
     QList<QList<CellView*> > cells;
 
+public:
+    GameManager* game_manager_;
+
 private:
+    // Custom parameters for field.
     size_t points_amount_ = 6;
     size_t paddings_ = 10;
     size_t cell_paddings_ = 10;

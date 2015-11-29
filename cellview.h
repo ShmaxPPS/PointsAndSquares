@@ -4,10 +4,12 @@
 #include <QGraphicsItem>
 #include "sideview.h"
 
-enum CellState { EMPTY, FIRST_PLAYER, SECOND_PLAYER };
+enum CellState { EMPTY, PLAYER, COMPUTER };
 
-class CellView : public QGraphicsItem
+class CellView : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
+
 public:
     CellView(size_t width, size_t height);
 
@@ -18,6 +20,9 @@ public:
     void setState(CellState state);
 
     CellState getState();
+
+signals:
+    void callCellRedraw();
 
 private:
     CellState state_;

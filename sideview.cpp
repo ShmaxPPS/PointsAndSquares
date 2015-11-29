@@ -2,12 +2,15 @@
 #include <iostream>
 #include "gamemanager.h"
 
-SideView::SideView(size_t width, size_t height) :
-    width_(width), height_(height), state(ENABLED)
+SideView::SideView(size_t width, size_t height, GameManager* game_manager)
 {
+    width_ = width;
+    height_ = height;
+    state = ENABLED;
     setAcceptHoverEvents(true);
     setFlag(ItemIsSelectable);
     brush_ = QBrush(Qt::green);
+    game_manager_ = game_manager;
 }
 
 QRectF SideView::boundingRect() const
@@ -18,7 +21,6 @@ QRectF SideView::boundingRect() const
 void SideView::paint(QPainter *painter,
                      const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
     QRectF rectf = boundingRect();
     switch (state)
     {
@@ -26,7 +28,7 @@ void SideView::paint(QPainter *painter,
             brush_.setColor(Qt::green);
             break;
         case PRESSED:
-            if (GameManager::isFirstPlayerTurn())
+            if (game_manager_->isPlayerTurn())
             {
                 brush_.setColor(Qt::blue);
             }
@@ -57,7 +59,7 @@ void SideView::mousePressEvent(QGraphicsSceneMouseEvent* event)
 void SideView::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     state = DISABLED;
-    GameManager::doTurn();
+    game_manager_->doTurn();
 }
 
 void SideView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -75,5 +77,23 @@ void SideView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     {
         state = ENABLED;
         QGraphicsItem::hoverLeaveEvent(event);
+    }
+}
+
+void SideView::pressSideView()
+{
+    if (state != DISABLED)
+    {
+        state = DISABLED;
+        if (game_manager_->isPlayerTurn())
+        {
+            brush_.setColor(Qt::blue);
+        }
+        else
+        {
+            brush_.setColor(Qt::red);
+        }
+        emit callSideRedraw(); // call for immediate redraw.
+        game_manager_->doTurn();
     }
 }

@@ -1,10 +1,12 @@
 #include <QGraphicsScene>
+#include <iostream>
 #include "gamefield.h"
 #include "sideview.h"
 
-GameField::GameField(QObject* parent) :
+GameField::GameField(GameManager* game_manager, QObject* parent) :
     QGraphicsScene(parent)
-{
+{    
+    game_manager_ = game_manager;
     drawHorizontalSides();
     drawVerticalSides();
     drawPoints();
@@ -24,7 +26,7 @@ void GameField::drawHorizontalSides()
         shift_x = paddings_ + circle_diameter_ / 2;
         for (size_t j = 0; j < points_amount_ - 1; ++j)
         {
-            SideView* side = new SideView(dx, circle_diameter_);
+            SideView* side = new SideView(dx, circle_diameter_, game_manager_);
             side->moveBy(shift_x, shift_y);
             addItem(side);
             horizontal_sides[i].push_back(side);
@@ -46,7 +48,7 @@ void GameField::drawVerticalSides()
         shift_x = paddings_;
         for (size_t j = 0; j < points_amount_; ++j)
         {
-            SideView* side = new SideView(circle_diameter_, dy);
+            SideView* side = new SideView(circle_diameter_, dy, game_manager_);
             side->moveBy(shift_x, shift_y);
             addItem(side);
             vertical_sides[i].push_back(side);
@@ -58,8 +60,8 @@ void GameField::drawVerticalSides()
 
 void GameField::drawPoints()
 {
-    QBrush brush(Qt::white);
-    QPen pen(Qt::white);
+    QBrush brush(Qt::black);
+    QPen pen(Qt::black);
 
     QLine line = QLine(QPoint(0, 0), QPoint(width_, 0)); // Draw top line
     this->addLine(line, pen);
